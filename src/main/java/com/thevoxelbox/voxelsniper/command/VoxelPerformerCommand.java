@@ -58,7 +58,7 @@ public class VoxelPerformerCommand extends VoxelCommand {
             if (brush instanceof IPerformerBrush) {
                 boolean success = ((IPerformerBrush) brush).parsePerformer(args[0], snipeData);
                 if (!success) {
-                    player.sendMessage(ChatColor.RED + "No such performer with the handle " + ChatColor.DARK_RED + "'" + args[0] + "'" + ChatColor.DARK_RED + " exists.");
+                    player.sendMessage(ChatColor.RED + "No such performer with the handle " + ChatColor.DARK_RED + "'" + args[0] + "'" + ChatColor.RED + " exists.");
                 }
             } else {
                 player.sendMessage("The active brush is not a performer brush.");
