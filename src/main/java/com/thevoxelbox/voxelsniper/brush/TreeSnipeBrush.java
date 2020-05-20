@@ -39,7 +39,7 @@ public class TreeSnipeBrush extends Brush {
      * @param targetBlock Block
      */
     @SuppressWarnings("deprecation")
-    private void safeGenerate(final SnipeData v, Block targetBlock) {
+    private void safeGenerateTree(final SnipeData v, Block targetBlock) {
 
         if (!targetBlock.getType().isAir()) {
             // We need the air block location above the target to generate a tree.
@@ -47,14 +47,14 @@ public class TreeSnipeBrush extends Brush {
 
             if (airBlockOnTop.getType().isAir()) {
                 UndoDelegate undoDelegate = new UndoDelegate(targetBlock.getWorld());
-                boolean success = this.getWorld().generateTree(airBlockOnTop.getLocation(), this.treeType, undoDelegate);
+                boolean generated = this.getWorld().generateTree(airBlockOnTop.getLocation(), this.treeType, undoDelegate);
 
-                // We let minecraft decide if a tree can be generated at this location an check the result.
-                if (success) {
+                // We let minecraft decide if a tree can be generated at this location and check the result.
+                if (generated) {
                     v.owner().storeUndo(undoDelegate.getUndo());
                 } else {
                     v.sendMessage(ChatColor.GOLD + "Life didn't found a way here...");
-                    v.sendMessage(ChatColor.GOLD + "Use gunpowder to try to force tree generation.");
+                    v.sendMessage(ChatColor.GOLD + "Try to use the gunpowder to force tree generation.");
                 }
             } else {
                 v.sendMessage(ChatColor.RED + "Block above the snipe target must be an air block");
@@ -66,36 +66,39 @@ public class TreeSnipeBrush extends Brush {
     }
 
     /***
-     * Try to forge the tree generation by altering the terrain beneath the snipe target point.
+     * Try to force the tree generation by altering the terrain beneath the snipe target location.
      * @param v SnipeData
      * @param targetBlock Block
      */
     @SuppressWarnings("deprecation")
-    private void forceGenerate(final SnipeData v, Block targetBlock) {
+    private void forceGenerateTree(final SnipeData v, Block targetBlock) {
 
         if (!targetBlock.getType().isAir()) {
+            //Get the air block on top.
             Block airBlockOnTop = targetBlock.getRelative(BlockFace.UP);
 
             if (airBlockOnTop.getType().isAir()){
 
+                //Prepare the new material
                 Material newMaterialBeneath;
-
                 if (treeType == TreeType.CHORUS_PLANT) {
                     newMaterialBeneath = Material.END_STONE;
                 } else {
                     newMaterialBeneath = Material.GRASS_BLOCK;
                 }
 
+                //Backup and prepare undo.
                 Material backupMat = targetBlock.getType();
                 BlockData backupData = targetBlock.getBlockData().clone();
-
                 UndoDelegate undoDelegate = new UndoDelegate(targetBlock.getWorld());
                 undoDelegate.setBlockData(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ(), targetBlock.getBlockData());
 
+                //Creating proper terrain and spawn attempt.
                 targetBlock.setType(newMaterialBeneath);
                 targetBlock.setBlockData(newMaterialBeneath.createBlockData());
                 boolean generated = this.getWorld().generateTree(airBlockOnTop.getLocation(), this.treeType, undoDelegate);
 
+                //Process result.
                 if (generated) {
                     v.owner().storeUndo(undoDelegate.getUndo());
                 } else {
@@ -105,7 +108,7 @@ public class TreeSnipeBrush extends Brush {
                 }
             }
         } else {
-            v.sendMessage(ChatColor.GOLD + "Snipe tree tool is unable to spawn trees on block of type : " + targetBlock.getType().name());
+            v.sendMessage(ChatColor.GOLD + "Snipe tree tool is unable to spawn trees on a block of type : " + targetBlock.getType().name());
         }
 
     }
@@ -151,12 +154,12 @@ public class TreeSnipeBrush extends Brush {
 
     @Override
     protected final void arrow(final SnipeData v) {
-        this.safeGenerate(v, getTargetBlock());
+        this.safeGenerateTree(v, getTargetBlock());
     }
 
     @Override
     protected final void powder(final SnipeData v) {
-        this.forceGenerate(v, getTargetBlock());
+        this.forceGenerateTree(v, getTargetBlock());
     }
 
     @Override
@@ -171,8 +174,9 @@ public class TreeSnipeBrush extends Brush {
         if (params[0].equalsIgnoreCase("info")) {
             v.sendMessage(ChatColor.GOLD + "Tree Snipe Brush Parameters:");
             v.sendMessage(ChatColor.AQUA + "/b " + triggerHandle + " [treeType]  -- Change tree type");
-            v.sendMessage(ChatColor.GOLD + "Arrow : Safe generation");
-            v.sendMessage(ChatColor.GOLD + "Gunpowder : Forced generation");
+            v.sendMessage(ChatColor.GREEN + "----USAGE----");
+            v.sendMessage(ChatColor.GREEN + "Tool -> Arrow : Safe generation");
+            v.sendMessage(ChatColor.GREEN + "Tool -> Gunpowder : Forced generation");
             return;
         }
 
