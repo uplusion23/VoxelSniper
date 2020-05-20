@@ -5,9 +5,8 @@ import com.thevoxelbox.voxelsniper.VoxelMessage;
 import com.thevoxelbox.voxelsniper.snipe.SnipeData;
 import com.thevoxelbox.voxelsniper.snipe.Undo;
 import com.thevoxelbox.voxelsniper.util.UndoDelegate;
-import java.util.ArrayList;
+
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.bukkit.ChatColor;
@@ -16,6 +15,7 @@ import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 
 /**
  * http://www.voxelwiki.com/minecraft/Voxelsniper#The_Tree_Brush
@@ -33,7 +33,84 @@ public class TreeSnipeBrush extends Brush {
         this.setName("Tree Snipe");
     }
 
+    /***
+     * Generate a tree only if the terrain is allowing it.
+     * @param v SnipeData
+     * @param targetBlock Block
+     */
     @SuppressWarnings("deprecation")
+    private void safeGenerate(final SnipeData v, Block targetBlock) {
+
+        if (!targetBlock.getType().isAir()) {
+            // We need the air block location above the target to generate a tree.
+            Block airBlockOnTop = targetBlock.getRelative(BlockFace.UP);
+
+            if (airBlockOnTop.getType().isAir()) {
+                UndoDelegate undoDelegate = new UndoDelegate(targetBlock.getWorld());
+                boolean success = this.getWorld().generateTree(airBlockOnTop.getLocation(), this.treeType, undoDelegate);
+
+                // We let minecraft decide if a tree can be generated at this location an check the result.
+                if (success) {
+                    v.owner().storeUndo(undoDelegate.getUndo());
+                } else {
+                    v.sendMessage(ChatColor.GOLD + "Life didn't found a way here...");
+                    v.sendMessage(ChatColor.GOLD + "Use gunpowder to try to force tree generation.");
+                }
+            } else {
+                v.sendMessage(ChatColor.RED + "Block above the snipe target must be an air block");
+            }
+        } else {
+            v.sendMessage(ChatColor.GOLD + "The snipe tool failed to reach a valid target. Try somewhere else.");
+        }
+
+    }
+
+    /***
+     * Try to forge the tree generation by altering the terrain beneath the snipe target point.
+     * @param v SnipeData
+     * @param targetBlock Block
+     */
+    @SuppressWarnings("deprecation")
+    private void forceGenerate(final SnipeData v, Block targetBlock) {
+
+        if (!targetBlock.getType().isAir()) {
+            Block airBlockOnTop = targetBlock.getRelative(BlockFace.UP);
+
+            if (airBlockOnTop.getType().isAir()){
+
+                Material newMaterialBeneath;
+
+                if (treeType == TreeType.CHORUS_PLANT) {
+                    newMaterialBeneath = Material.END_STONE;
+                } else {
+                    newMaterialBeneath = Material.GRASS_BLOCK;
+                }
+
+                Material backupMat = targetBlock.getType();
+                BlockData backupData = targetBlock.getBlockData().clone();
+
+                UndoDelegate undoDelegate = new UndoDelegate(targetBlock.getWorld());
+                undoDelegate.setBlockData(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ(), targetBlock.getBlockData());
+
+                targetBlock.setType(newMaterialBeneath);
+                targetBlock.setBlockData(newMaterialBeneath.createBlockData());
+                boolean generated = this.getWorld().generateTree(airBlockOnTop.getLocation(), this.treeType, undoDelegate);
+
+                if (generated) {
+                    v.owner().storeUndo(undoDelegate.getUndo());
+                } else {
+                    v.sendMessage(ChatColor.RED + "Nothing will let you spawn a tree here.");
+                    targetBlock.setType(backupMat);
+                    targetBlock.setBlockData(backupData);
+                }
+            }
+        } else {
+            v.sendMessage(ChatColor.GOLD + "Snipe tree tool is unable to spawn trees on block of type : " + targetBlock.getType().name());
+        }
+
+    }
+
+    @Deprecated
     private void single(final SnipeData v, Block targetBlock) {
         UndoDelegate undoDelegate = new UndoDelegate(targetBlock.getWorld());
         Block blockBelow = targetBlock.getRelative(BlockFace.DOWN);
@@ -47,6 +124,7 @@ public class TreeSnipeBrush extends Brush {
         v.owner().storeUndo(undo);
     }
 
+    @Deprecated
     private int getYOffset() {
         for (int i = 1; i < (getTargetBlock().getWorld().getMaxHeight() - 1 - getTargetBlock().getY()); i++) {
             if (Objects.equal(getTargetBlock().getRelative(0, i + 1, 0).getType(), Material.AIR)) {
@@ -55,6 +133,7 @@ public class TreeSnipeBrush extends Brush {
         }
         return 0;
     }
+
 
     private void printTreeType(final VoxelMessage vm) {
         String printout = "";
@@ -74,13 +153,12 @@ public class TreeSnipeBrush extends Brush {
 
     @Override
     protected final void arrow(final SnipeData v) {
-        Block targetBlock = getTargetBlock().getRelative(0, getYOffset(), 0);
-        this.single(v, targetBlock);
+        this.safeGenerate(v, getTargetBlock());
     }
 
     @Override
     protected final void powder(final SnipeData v) {
-        this.single(v, getTargetBlock());
+        this.forceGenerate(v, getTargetBlock());
     }
 
     @Override
@@ -91,9 +169,12 @@ public class TreeSnipeBrush extends Brush {
 
     @Override
     public final void parseParameters(final String triggerHandle, final String[] params, final SnipeData v) {
+
         if (params[0].equalsIgnoreCase("info")) {
             v.sendMessage(ChatColor.GOLD + "Tree Snipe Brush Parameters:");
             v.sendMessage(ChatColor.AQUA + "/b " + triggerHandle + " [treeType]  -- Change tree type");
+            v.sendMessage(ChatColor.GOLD + "Arrow : Safe generation");
+            v.sendMessage(ChatColor.GOLD + "Gunpowder : Forced generation");
             return;
         }
 
@@ -107,11 +188,7 @@ public class TreeSnipeBrush extends Brush {
 
     @Override
     public List<String> registerArguments() {
-        List<String> arguments = new ArrayList<>();
-
-        arguments.addAll(Arrays.stream(TreeType.values()).map(e -> e.name()).collect(Collectors.toList()));
-
-        return arguments;
+        return Arrays.stream(TreeType.values()).map(Enum::name).collect(Collectors.toList());
     }
 
     @Override
