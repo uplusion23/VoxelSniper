@@ -4,7 +4,7 @@
 
     <groupId>com.thevoxelbox</groupId>
     <artifactId>VoxelSniper</artifactId>
-    <version>6.1.2</version>
+    <version>6.2.0</version>
     <packaging>jar</packaging>
 
     <name>VoxelSniper</name>
@@ -12,9 +12,9 @@
     <url>http://www.voxelwiki.com/minecraft/VoxelSniper</url>
 
     <scm>
-        <url>https://github.com/ervinnnc/VoxelSniper</url>
-        <developerConnection>scm:git:git@github.com:ervinnnc/VoxelSniper.git</developerConnection>
-        <connection>scm:git:git://github.com/ervinnnc/VoxelSniper.git</connection>
+        <url>https://github.com/Aime23/VoxelSniper</url>
+        <developerConnection>scm:git:git@github.com:Aime23/VoxelSniper.git</developerConnection>
+        <connection>scm:git:git://github.com/Aime23/VoxelSniper.git</connection>
     </scm>
 
     <properties>
