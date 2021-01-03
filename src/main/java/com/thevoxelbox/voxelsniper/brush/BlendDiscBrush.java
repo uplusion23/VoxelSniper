@@ -100,7 +100,7 @@ public class BlendDiscBrush extends BlendBrushBase {
 
             for (int z = brushSizeDoubled; z >= 0; z--) {
                 if (xSquared + Math.pow(z - brushSize - 1, 2) <= rSquared) {
-                    if (!(this.excludeAir && isAir(newMaterials[x][z])) && !(this.excludeWater && newMaterials[x][z] == Material.WATER)) {
+                    if (!(this.excludeAir && newMaterials[x][z].isAir()) && !(this.excludeWater && newMaterials[x][z] == Material.WATER)) {
                         if (this.getBlockMaterialAt(this.getTargetBlock().getX() - brushSize + x, this.getTargetBlock().getY(), this.getTargetBlock().getZ() - brushSize + z) != newMaterials[x][z]) {
                             undo.put(this.clampY(this.getTargetBlock().getX() - brushSize + x, this.getTargetBlock().getY(), this.getTargetBlock().getZ() - brushSize + z));
                         }

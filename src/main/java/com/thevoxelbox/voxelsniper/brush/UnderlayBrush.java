@@ -93,7 +93,7 @@ public class UnderlayBrush extends PerformerBrush {
             return list.contains(material);
         }
 
-        if (allBlocks && !isAir(material)) {
+        if (allBlocks && !material.isAir()) {
             return true;
         }
 

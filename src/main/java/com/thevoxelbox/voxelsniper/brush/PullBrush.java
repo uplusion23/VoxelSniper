@@ -102,7 +102,7 @@ public class PullBrush extends Brush {
     @SuppressWarnings("deprecation")
     private void setBlock(final BlockWrapper block) {
         final Block currentBlock = this.clampY(block.getX(), block.getY() + (int) (this.vh * block.getStr()), block.getZ());
-        if (isAir(this.getBlockMaterialAt(block.getX(), block.getY() - 1, block.getZ()))) {
+        if (this.getBlockMaterialAt(block.getX(), block.getY() - 1, block.getZ()).isAir()) {
             currentBlock.setBlockData(block.getBlockData());
             for (int y = block.getY(); y < currentBlock.getY(); y++) {
                 this.setBlockMaterialAt(block.getZ(), block.getX(), y, Material.AIR);
