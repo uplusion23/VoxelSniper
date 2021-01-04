@@ -160,7 +160,7 @@ public class PunishBrush extends Brush {
                                 target.setX(location.getX() + x);
                                 target.setY(location.getY() + y);
                                 target.setZ(location.getZ() + z);
-                                if (this.hypnoAffectLandscape && isAir(target.getBlock().getType())) {
+                                if (this.hypnoAffectLandscape && target.getBlock().getType().isAir()) {
                                     continue;
                                 }
                                 target = location.clone();

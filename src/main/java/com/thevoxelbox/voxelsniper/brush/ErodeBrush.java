@@ -336,14 +336,7 @@ public class ErodeBrush extends Brush {
          * @return if the block is Empty.
          */
         public boolean isEmpty() {
-            switch (this.getMaterial()){
-                case AIR:
-                case CAVE_AIR:
-                case VOID_AIR:   
-                   return true;
-                default:
-                    return false;
-            }
+            return this.getMaterial().isAir();
         }
 
         /**
