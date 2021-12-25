@@ -66,6 +66,7 @@ import com.thevoxelbox.voxelsniper.brush.SplatterDiscBrush;
 import com.thevoxelbox.voxelsniper.brush.SplatterOverlayBrush;
 import com.thevoxelbox.voxelsniper.brush.SplatterVoxelBrush;
 import com.thevoxelbox.voxelsniper.brush.SplineBrush;
+import com.thevoxelbox.voxelsniper.brush.StencilBrush;
 import com.thevoxelbox.voxelsniper.brush.ThreePointCircleBrush;
 import com.thevoxelbox.voxelsniper.brush.TreeSnipeBrush;
 import com.thevoxelbox.voxelsniper.brush.TriangleBrush;
@@ -172,7 +173,7 @@ public class VoxelBrushManager {
         brushManager.registerSniperBrush(SplatterVoxelBrush.class, "sv", "splattervoxel");
         brushManager.registerSniperBrush(SplatterDiscBrush.class, "svd", "splatvoxeldisc");
         brushManager.registerSniperBrush(SplineBrush.class, "sp", "spline");
-        //brushManager.registerSniperBrush(StencilBrush.class, "st", "stencil");
+        brushManager.registerSniperBrush(StencilBrush.class, "st", "stencil");
         //brushManager.registerSniperBrush(StencilListBrush.class, "sl", "stencillist");
         brushManager.registerSniperBrush(ThreePointCircleBrush.class, "tpc", "threepointcircle");
         brushManager.registerSniperBrush(TreeSnipeBrush.class, "t", "tree", "treesnipe");
