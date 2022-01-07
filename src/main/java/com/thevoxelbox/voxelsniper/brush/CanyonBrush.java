@@ -19,8 +19,8 @@ import org.bukkit.block.Block;
  */
 public class CanyonBrush extends Brush {
 
-    private static final int SHIFT_LEVEL_MIN = 10;
-    private static final int SHIFT_LEVEL_MAX = 60;
+    private static final int SHIFT_LEVEL_MIN = -55;
+    private static final int SHIFT_LEVEL_MAX = 100;
     private int yLevel = 10;
 
     /**

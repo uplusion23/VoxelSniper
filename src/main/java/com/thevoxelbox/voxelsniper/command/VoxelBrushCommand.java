@@ -44,8 +44,6 @@ public class VoxelBrushCommand extends VoxelCommand {
         // Default command
         // Command: /b, /b help, /b info
         if (args.length == 1 && (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("info"))) {
-            player.sendMessage(ChatColor.DARK_AQUA + "VoxelSniper 6.3.0 [1.18.1]");
-            player.sendMessage(ChatColor.DARK_AQUA + "- Updated By: " + ChatColor.YELLOW + "uplusion23 -");
             player.sendMessage(ChatColor.DARK_AQUA + getName() + " Command Syntax:");
             player.sendMessage(ChatColor.GOLD + "/" + getActiveAlias() + " [brushHandle] [arguments...]");
             player.sendMessage(ChatColor.YELLOW + "    Changes to the brush with the specified brush handle, with the specified arguments.");

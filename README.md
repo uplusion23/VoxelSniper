@@ -15,7 +15,7 @@ VoxelSniper was built against the Spigot 1.17.1 API.
 
 Compilation
 -----------
-Pre-compiled JARs are available in releases. Latest release is `6.4.0`.
+Pre-compiled JARs are available in releases. Latest release is `6.3.0`.
 
 We use Maven to handle dependencies.
 
