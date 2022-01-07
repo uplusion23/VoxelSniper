@@ -131,11 +131,11 @@ public class PullBrush extends Brush {
         this.vh = v.getVoxelHeight();
         this.getSurface(v);
 
-        if (this.vh > 0) {
+        if (this.vh > -64) {
             for (final BlockWrapper block : this.surface) {
                 this.setBlock(block);
             }
-        } else if (this.vh < 0) {
+        } else if (this.vh < -64) {
             for (final BlockWrapper block : this.surface) {
                 this.setBlockDown(block);
             }

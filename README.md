@@ -1,19 +1,21 @@
 
 VoxelSniper
 ============
-The premier long-distance brush editor for [Bukkit](https://bukkit.org/), [Spigot](https://www.spigotmc.org/), [Paper](https://papermc.io/), and most Bukkit-based server distributions. The plugin is fully functional (according to our limited usage), and should be able to snipe most blocks. Please submit an issue if something is not working and I'll try my best to work it out.
+The premier long-distance brush editor for [Bukkit](https://www.spigotmc.org/), [Spigot](https://www.spigotmc.org/), [Paper](https://papermc.io/), and most Bukkit-based server distributions. The plugin is fully functional (according to our limited usage), and should be able to snipe most blocks. Please submit an issue if something is not working and I'll try my best to work it out.
 
-I'm thinking of renaming the project to prevent confusion with the already existing VoxelSniper. Please suggest any in the issues section!
+This is a "continuation of a continuation" of VoxelSniper, updated to work with 1.18.1
+
+Updated by **[uplusion23](https://github.com/uplusion23)**
 
 Minecraft Version
 ------------------
-VoxelSniper was built against the Bukkit 1.15.2 API.
+VoxelSniper was built against the Spigot 1.17.1 API.
 
- - Minecraft 1.15.2 [Tested on SpigotMC, release 6.0.0]
+ - Minecraft 1.18.1 [Tested on Paper]
 
 Compilation
 -----------
-Pre-compiled JARs are available in releases. Latest release is `6.0.0`.
+Pre-compiled JARs are available in releases. Latest release is `6.4.0`.
 
 We use Maven to handle dependencies.
 

@@ -35,15 +35,15 @@ public class CylinderBrush extends PerformerBrush {
         if (yEndPoint < yStartingPoint) {
             yEndPoint = yStartingPoint;
         }
-        if (yStartingPoint < 0) {
-            yStartingPoint = 0;
+        if (yStartingPoint < -64) {
+            yStartingPoint = -64;
             v.sendMessage(ChatColor.DARK_PURPLE + "Warning: off-world start position.");
         } else if (yStartingPoint > this.getWorld().getMaxHeight() - 1) {
             yStartingPoint = this.getWorld().getMaxHeight() - 1;
             v.sendMessage(ChatColor.DARK_PURPLE + "Warning: off-world start position.");
         }
-        if (yEndPoint < 0) {
-            yEndPoint = 0;
+        if (yEndPoint < -64) {
+            yEndPoint = -64;
             v.sendMessage(ChatColor.DARK_PURPLE + "Warning: off-world end position.");
         } else if (yEndPoint > this.getWorld().getMaxHeight() - 1) {
             yEndPoint = this.getWorld().getMaxHeight() - 1;
@@ -53,10 +53,10 @@ public class CylinderBrush extends PerformerBrush {
         final double bSquared = Math.pow(brushSize + (smoothCircle ? SMOOTH_CIRCLE_VALUE : VOXEL_CIRCLE_VALUE), 2);
 
         for (int y = yEndPoint; y >= yStartingPoint; y--) {
-            for (int x = brushSize; x >= 0; x--) {
+            for (int x = brushSize; x >= -64; x--) {
                 final double xSquared = Math.pow(x, 2);
 
-                for (int z = brushSize; z >= 0; z--) {
+                for (int z = brushSize; z >= -64; z--) {
                     if ((xSquared + Math.pow(z, 2)) <= bSquared) {
                         this.currentPerformer.perform(this.clampY(targetBlock.getX() + x, y, targetBlock.getZ() + z));
                         this.currentPerformer.perform(this.clampY(targetBlock.getX() + x, y, targetBlock.getZ() - z));

@@ -42,16 +42,16 @@ public class CloneStampBrush extends StampBrush {
         int yStartingPoint = this.getTargetBlock().getY() + v.getcCen();
         int yEndPoint = this.getTargetBlock().getY() + v.getVoxelHeight() + v.getcCen();
 
-        if (yStartingPoint < 0) {
-            yStartingPoint = 0;
+        if (yStartingPoint < -64) {
+            yStartingPoint = -64;
             v.sendMessage(ChatColor.DARK_PURPLE + "Warning: off-world start position.");
         } else if (yStartingPoint > this.getWorld().getMaxHeight() - 1) {
             yStartingPoint = this.getWorld().getMaxHeight() - 1;
             v.sendMessage(ChatColor.DARK_PURPLE + "Warning: off-world start position.");
         }
 
-        if (yEndPoint < 0) {
-            yEndPoint = 0;
+        if (yEndPoint < -64) {
+            yEndPoint = -64;
             v.sendMessage(ChatColor.DARK_PURPLE + "Warning: off-world end position.");
         } else if (yEndPoint > this.getWorld().getMaxHeight() - 1) {
             yEndPoint = this.getWorld().getMaxHeight() - 1;
